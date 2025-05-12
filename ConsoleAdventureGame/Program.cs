@@ -1,4 +1,6 @@
-﻿namespace ConsoleAdventureGame
+﻿using ConsoleAdventureGame.Utils;
+
+namespace ConsoleAdventureGame
 {
     internal class Program
     {
