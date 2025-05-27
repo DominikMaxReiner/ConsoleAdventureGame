@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
-    public static class Fight //TODO: implement regeneration and bow-attack
+    public static class Fight //TODO: implement bow-attack
     {
         public static void PerformFight(Player player, Enemy enemy)
         {

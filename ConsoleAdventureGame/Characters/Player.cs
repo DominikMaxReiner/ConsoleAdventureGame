@@ -25,9 +25,11 @@ namespace ConsoleAdventureGame
         public bool TempleKeyFound { get; set; } = false; //always set to false by default
         public bool ReachedTempleKeyFight { get; set; } = false; //always set to false by default
 
-        /// Properties needed in the Canyon
+        /// Properties needed in the Desert
         public char[,] Labyrinth { get; set; }
         public string LabyrinthPath { get; set; }
+
+        public bool PassedCanyonGuardians { get; set; } = false; //always set to false by default
 
 
         public Player(string name)
@@ -38,7 +40,32 @@ namespace ConsoleAdventureGame
             LabyrinthPath = labyrinthPath;
         }
 
-        public void PerformAttack(Enemy enemy) => Attack.ExecuteAttack(this, enemy);
+        public void PerformAttack(Enemy enemy)
+        {
+            Attack.ExecuteAttack(this, enemy);
+
+            if(enemy is CactusGolem)
+            {
+                if(this.CurrentVehicle != null)
+                {
+                    this.CurrentVehicle.Lives -= 50;
+                    ConsoleUtils.ColorWriteLine($"You have lost 50 lives of your {this.CurrentVehicle.Name} due to the cactus spines.", "red");
+                    if (this.CurrentVehicle.Lives <= 0)
+                    {
+                        Console.WriteLine();
+                        ConsoleUtils.ColorWriteLine($"You have lost your {this.CurrentVehicle.Name}.", "red");
+                        Console.WriteLine();
+                        this.CurrentVehicle = null;
+                    }
+                }
+                else
+                {
+                    this.Lives -= 1;
+
+                    ConsoleUtils.ColorWriteLine($"You have lost 1 life due to the cactus spines.", "red");
+                }
+            }
+        }
 
         public void PerformBowAttack(Enemy enemy) => new Bow().Attack(enemy);
     }

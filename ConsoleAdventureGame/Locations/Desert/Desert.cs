@@ -6,20 +6,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
-    class Canyon : Location
+    class Desert : Location
     {
-        public Canyon(Player player) : base(player)
+        public Desert(Player player) : base(player)
         {
         }
 
         protected override void Introduction()
         {
             string introductionText = "You see....            ....nothing. Just desert, heat, and sand. But what is that? A hut? Good luck!";
-
-            // TODO: abandoned hut with an old letter from a deceased archaeologist -> also with a map for a labyrinth -> instructions like left;right;right.... are expected
-            // TODO: a bridge that might collapse with a certain probability, alternatively fight monsters
-            // TODO: rockfall that can only be passed with a car, otherwise vehicle is lost or death (if no vehicle is present)
-
 
             ConsoleUtils.ColorWriteLine(introductionText, "gray");
         }

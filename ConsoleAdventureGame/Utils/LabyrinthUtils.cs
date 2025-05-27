@@ -85,13 +85,13 @@ namespace ConsoleAdventureGame.Utils
             return path;
         }
 
-        public static void PrintLabyrinth(char[,] labyrinth)
+        public static void PrintLabyrinth(char[,] labyrinth, string color)
         {
             for (int i = 0; i < labyrinth.GetLength(0); i++)
             {
                 for (int j = 0; j < labyrinth.GetLength(1); j++)
                 {
-                    Console.Write(labyrinth[i, j]);
+                    ConsoleUtils.ColorWrite(Convert.ToString(labyrinth[i, j]), color);
                 }
                 Console.WriteLine();
             }
