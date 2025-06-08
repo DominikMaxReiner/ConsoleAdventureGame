@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
-    public class GasStation : Location
+    public class GasStation : Location // TODO: check if this class is needed
     {
         public GasStation(Player player) : base(player)
         {

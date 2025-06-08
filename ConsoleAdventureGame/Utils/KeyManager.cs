@@ -12,8 +12,6 @@ namespace ConsoleAdventureGame
         {
             ConsoleUtils.ColorWriteLine("You received another Key: ", "gray");
             player.AmountOfKeys += 1;
-            /*if (player.AmountOfKeys == 3)
-                Endgame.Endfight(player);*/
         }
     }
 }

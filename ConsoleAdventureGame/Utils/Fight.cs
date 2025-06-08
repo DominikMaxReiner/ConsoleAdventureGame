@@ -31,7 +31,7 @@ namespace ConsoleAdventureGame
             while(true)
             {
                 Thread.Sleep(15000); // wait 15 seconds
-                if (player.Lives < 10)
+                if (player.Lives < player.MaximumLives)
                 {
                     player.Lives += 1;
                 }
@@ -53,8 +53,6 @@ namespace ConsoleAdventureGame
 
         public static void PerformMultipleEnemyFight(Player player, List<Enemy> enemies)
         {
-            int enemyCount = enemies.Count;
-
             ConsoleUtils.ColorWrite("You are fighting against multiple enemies! Those are ", "red");
             foreach (var enemy in enemies)
             {
@@ -62,7 +60,7 @@ namespace ConsoleAdventureGame
             }
             ConsoleUtils.ColorWriteLine("Start!", "red");
 
-            while (player.Lives > 0 && enemyCount > 0)
+            while (player.Lives > 0 && enemies.Count > 0)
             {
                 InputUtils.GetPlayerInput(new Dictionary<string, Action>
                 {
@@ -70,9 +68,20 @@ namespace ConsoleAdventureGame
                     { "Flee to the village", () => new Village(player) }
                 });
 
-                for (int i = 0; i < enemyCount; i++)
+                for (int i = 0; i < enemies.Count; i++) //deletes a dead enemy from the list
+                {
+                    if (enemies[i].Lives <= 0)
+                    {
+                        enemies.RemoveAt(i);
+                    }
+                }
+
+                for (int i = 0; i < enemies.Count; i++)
                 {
                     enemies[i].PerformAttack(player);
+
+                    if (player.Lives <= 0)
+                        Respawn.RespawnPlayer(player);
                 }
             }
         }
@@ -83,10 +92,13 @@ namespace ConsoleAdventureGame
 
             Dictionary<string, Action> enemySelection = new Dictionary<string, Action>();
 
-            for (int i = 0; i < enemySelection.Count; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                enemySelection.Add($"Attack {enemies[i].Name}", () => player.PerformAttack(enemies[i]));
+                int index = i;
+                enemySelection.Add($"Attack {enemies[index].Name}", () => player.PerformAttack(enemies[index]));
             }
+
+            InputUtils.GetPlayerInput(enemySelection);
         }
     }
 }

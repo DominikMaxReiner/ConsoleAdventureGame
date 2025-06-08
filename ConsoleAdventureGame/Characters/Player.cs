@@ -20,6 +20,8 @@ namespace ConsoleAdventureGame
         public Vehicle? CurrentVehicle { get; set; }
         public int AmountOfKeys { get; set; } = 0; //always set to 0 by default
 
+        public int MaximumLives { get; set; } = 10; //always set to 10 by default
+
         /// Properties needed in the DarkForest
         public bool DestroyedTemple { get; set; } = false; //always set to false by default
         public bool TempleKeyFound { get; set; } = false; //always set to false by default
@@ -30,7 +32,8 @@ namespace ConsoleAdventureGame
         public string LabyrinthPath { get; set; }
 
         public bool PassedCanyonGuardians { get; set; } = false; //always set to false by default
-
+        public bool PassedLabyrinth { get; set; } = false; //always set to false by default
+        public bool CanyonKeyFound { get; set; } = false; //always set to false by default
 
         public Player(string name)
         {

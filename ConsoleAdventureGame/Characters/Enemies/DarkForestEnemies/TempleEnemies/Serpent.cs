@@ -25,6 +25,8 @@ namespace ConsoleAdventureGame
 
         private void Poison(Player player)
         {
+            Thread.Sleep(50); // wait a bit so the Console-output doesn't get mixed up
+
             Dialog.ShowMessage(Name, "You got poisoned!", "darkred");
 
             for (int i = 0; i < 10; i++)

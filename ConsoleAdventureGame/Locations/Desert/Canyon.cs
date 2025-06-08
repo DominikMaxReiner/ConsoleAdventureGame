@@ -99,6 +99,8 @@ namespace ConsoleAdventureGame
             {
                 PassLabyrinth(player); // if the player has no vehicle, he can pass the labyrinth directly
             }
+
+            PortalUtils.OpenPortal(player); // after passing the labyrinth, the player can open the portal to the EndFight
         }
 
         private void PassLabyrinth(Player player)
@@ -109,7 +111,7 @@ namespace ConsoleAdventureGame
             ConsoleUtils.ColorWriteLine("Which way do you go?", "white");
             ConsoleUtils.ColorWriteLine("Enter your path using 'l' for left and 'r' for right, e.g.: llrrlrlrllr", "yellow");
 
-            while(true)
+            while(!player.PassedLabyrinth)
             {
                 string playersPath = "";
 
@@ -129,7 +131,7 @@ namespace ConsoleAdventureGame
                 }
             }
 
-            // TODO: implement the portal to the endgame
+            player.PassedLabyrinth = true; // set the property to true, so the player hasn`t to pass the labyrinth again
         }
     }
 }
