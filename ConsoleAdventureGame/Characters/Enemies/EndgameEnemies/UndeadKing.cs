@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
-    // TODO: implement a boss bar
     public class UndeadKing : Enemy
     {
+        private bool AttacksOnHisOwn { get; set; } = false; // if the lives get udner 100, the Undead King attacks on his own -> at the transition (but only one time) he sais that he got mad now
+
+        private int _maxLives = 200;
+
         public override string Name { get; } = "UNDEAD KING";
 
-        public override int Lives { get; set; } = 200;
+        private int _lives = 200; // Undead King starts with 200 lives
+        public override int Lives 
+        {
+            get => _lives; 
+            set
+            {
+                _lives = value;
+                ShowBossBar(); // refresh the boss bar when lives are changed
+            }
+        }
 
         public override int Damage { get; } = 40;
 
@@ -19,20 +33,39 @@ namespace ConsoleAdventureGame
 
         public override int CriticalDamage { get; } = 60;
 
-
         public override void PerformAttack(Player player)
         {
-            if (Lives <= 100)
-                SummonMinions();
+            if (Lives >= 100)
+            {
+                Dialog.ShowMessage(Name, $"I summoned my minions!! They have their own special abilities...", "darkred");
+                SummonMinions(player);
+            }
             else
+            {
+                if (!AttacksOnHisOwn) // if the Undead King has not attacked on his own yet
+                {
+                    AttacksOnHisOwn = true; // set the flag to true, so he only attacks on his own once
+                    Dialog.ShowMessage(Name, "I have gone mad now! I attack you on my own now!", "darkred");
+                }
                 PerformOwnAttack(player);
-
-            RefreshBossBar();
+            }
         }
 
-        private void SummonMinions()
+        private void SummonMinions(Player player)
         {
-            // TODO: Implement the logic to summon minions
+            // Logic to summon minions with an own fight
+            Fight.PerformMultipleEnemyFight(player, new List<Enemy>
+            {
+                new UndeadMage(),
+                new ShieldWarrior()
+            }, false);
+
+            //sets the player's weapon damage to the default value
+            Type weaponType = player.CurrentWeapon.GetType();
+            Weapon defaultWeapon = (Weapon)Activator.CreateInstance(weaponType)!;
+            player.CurrentWeapon.Damage = defaultWeapon.Damage;
+
+            player.CanRegenarateLives = true; // after a fight against the minions the player can regenerate lives again
         }
 
         private void PerformOwnAttack(Player player)
@@ -41,29 +74,30 @@ namespace ConsoleAdventureGame
             Random random = new Random();
 
             //the Undead King has a chance to heal himself when attacking
-            if (random.Next(0, 2) == 2)
+            if (random.Next(0, 2) == 1)
             {
                 int regeneration = (200 - Lives) / 8;
                 Lives += regeneration;
-                Dialog.ShowMessage(Name, $"I have healed myself! I got {regeneration} lives.", "darkred");
+                Dialog.ShowMessage(Name, $"You hit me, but I have healed myself! I got {regeneration} lives.", "darkred");
             }
         }
 
-        private void RefreshBossBar()
+        public void ShowBossBar()
         {
-            Console.Clear();
+            //Console.Clear();
             ConsoleUtils.ColorWrite("BOSS BAR: ", "red");
 
             int maxBar = 50;
+            int bossBarDevider = _maxLives / maxBar; // 200 lives / 50 characters = 4 lives per character
 
             // boss bar should only be 50 characters wide
             for (int i = 0; i < maxBar; i++)
             {
-                if (i < maxBar/2 && i <= Lives)
+                if (i < maxBar/2 && i <= Lives / bossBarDevider)
                 {
                     ConsoleUtils.ColorWrite("█", "red");
                 }
-                else if(i <= Lives)
+                else if(i <= Lives / bossBarDevider)
                 {
                     ConsoleUtils.ColorWrite("█", "green");
                 }

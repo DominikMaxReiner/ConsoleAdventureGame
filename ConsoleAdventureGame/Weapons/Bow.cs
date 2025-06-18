@@ -10,12 +10,7 @@ namespace ConsoleAdventureGame
     {
         public override string Name { get; } = "Bow";
         public override int Price { get; } = 150;
-        public override int Damage { get; } = 30;
+        public override int Damage { get; set; } = 10;
         public override bool CanShoot { get; } = true;
-
-        public void Attack(Enemy enemy)
-        {
-            //TODO: implement Bow Attack (maybe delete bow from game: has not a use yet)
-        }
     }
 }

@@ -8,20 +8,37 @@ namespace ConsoleAdventureGame
 {
     public static class Fight //TODO: implement bow-attack
     {
-        public static void PerformFight(Player player, Enemy enemy)
+        public static void PerformFight(Player player, Enemy enemy, bool allowFlee = true)
         {
             ConsoleUtils.ColorWriteLine($"You are fighting against {enemy.Name}!", "red");
             Console.WriteLine();
+            ConsoleUtils.ColorWriteLine("Do you want to fight? There is no way back...", "red");
+            ConsoleUtils.ColorWriteLine("Start!", "red");
 
+            if (allowFlee)
+            {
+                InputUtils.GetPlayerInput(new Dictionary<string, Action>
+                {
+                    { "Fight", () => FightLoop(player, enemy) },
+                    { "Flee to the village", () => new Village(player) }
+                });
+            }
+            else //in the endgame the player has to fight, there is no way back
+            {
+                FightLoop(player, enemy);
+            }
+        }
+
+        private static void FightLoop(Player player, Enemy enemy)
+        {
             while (player.Lives > 0 && enemy.Lives > 0)
             {
                 InputUtils.GetPlayerInput(new Dictionary<string, Action>
                 {
-                    { "Attack", () => player.PerformAttack(enemy) },
-                    { "Flee to the village", () => new Village(player) }
+                    { "Attack", () => player.PerformAttack(enemy) }
                 });
 
-                if(enemy.Lives > 0)
+                if (enemy.Lives > 0)
                     enemy.PerformAttack(player);
             }
         }
@@ -30,8 +47,8 @@ namespace ConsoleAdventureGame
         {
             while(true)
             {
-                Thread.Sleep(15000); // wait 15 seconds
-                if (player.Lives < player.MaximumLives)
+                Thread.Sleep(8000); // wait 8 seconds
+                if (player.Lives < player.MaximumLives && player.CanRegenarateLives)
                 {
                     player.Lives += 1;
                 }
@@ -51,21 +68,39 @@ namespace ConsoleAdventureGame
             }
         }
 
-        public static void PerformMultipleEnemyFight(Player player, List<Enemy> enemies)
+        public static void PerformMultipleEnemyFight(Player player, List<Enemy> enemies, bool allowFlee = true)
         {
             ConsoleUtils.ColorWrite("You are fighting against multiple enemies! Those are ", "red");
             foreach (var enemy in enemies)
             {
                 ConsoleUtils.ColorWrite($"{enemy.Name}, ", "red");
             }
+
+            Console.WriteLine();
+            ConsoleUtils.ColorWriteLine("Do you want to fight? There is no way back...", "red");
             ConsoleUtils.ColorWriteLine("Start!", "red");
 
+            if (allowFlee)
+            {
+                InputUtils.GetPlayerInput(new Dictionary<string, Action>
+                {
+                    { "Fight", () => FightLoopMultipleEnemies(player, enemies) },
+                    { "Flee to the village", () => new Village(player) }
+                });
+            }
+            else //in the endgame the player has to fight, there is no way back
+            {
+                FightLoopMultipleEnemies(player, enemies);
+            }
+        }
+
+        private static void FightLoopMultipleEnemies(Player player, List<Enemy> enemies)
+        {
             while (player.Lives > 0 && enemies.Count > 0)
             {
                 InputUtils.GetPlayerInput(new Dictionary<string, Action>
                 {
-                    { "Attack", () => SelectEnemy(player, enemies) },
-                    { "Flee to the village", () => new Village(player) }
+                    { "Attack", () => SelectEnemy(player, enemies) }
                 });
 
                 for (int i = 0; i < enemies.Count; i++) //deletes a dead enemy from the list

@@ -67,7 +67,7 @@ namespace ConsoleAdventureGame
                 case "//l":
                     ConsoleUtils.ColorWriteLine($"Lives: {CurrentPlayer?.Lives}", "yellow");
                     break;
-                case "//m":
+                case "//c":
                     ConsoleUtils.ColorWriteLine($"Coins: {CurrentPlayer?.Coins}", "yellow");
                     break;
                 case "//k":

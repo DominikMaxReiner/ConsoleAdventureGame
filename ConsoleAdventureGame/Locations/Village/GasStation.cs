@@ -22,6 +22,12 @@ namespace ConsoleAdventureGame
 
         protected override void PerformAction(Player player)
         {
+            if (player.CurrentVehicle == null)
+            {
+                Dialog.ShowMessage("Employee", "You don't own a vehicle. Please buy one at the VehicleStore first.", "white");
+                _ = new Village(player);
+                return;
+            }
             player.CurrentVehicle.TankLevel += InteractionUtils.PerformTransaction(player, player.CurrentVehicle != null, $"How much would you like to refuel your {player.CurrentVehicle?.Name}? (Price: 1 coin = 1 liter)", "You don't own a vehicle.");
             _ = new Village(player);
         }

@@ -10,7 +10,7 @@ namespace ConsoleAdventureGame
     {
         public abstract string Name { get; }
         public abstract int Price { get; }
-        public abstract int Damage { get; }
+        public abstract int Damage { get; set; }
         public abstract bool CanShoot { get; }
     }
 }

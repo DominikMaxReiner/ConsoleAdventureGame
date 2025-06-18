@@ -10,7 +10,7 @@ namespace ConsoleAdventureGame
     {
         public override string Name { get; } = "Sword";
         public override int Price { get; } = 100;
-        public override int Damage {get; } = 30;
+        public override int Damage { get; set; } = 30;
         public override bool CanShoot { get; } = false;
     }
 }

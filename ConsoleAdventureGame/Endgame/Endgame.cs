@@ -13,6 +13,8 @@ namespace ConsoleAdventureGame
             //TODO: implement the endgame fight
 
             Preperation(player);
+
+            Fight.PerformFight(player, new UndeadKing(), false);
         }
 
         private static void Preperation(Player player)
@@ -21,8 +23,8 @@ namespace ConsoleAdventureGame
 
             ConsoleUtils.ColorWriteLine("There is an armor. You put it on.", "green");
 
-            player.Lives = 100; // set the player's lives to 100 for the endgame fight (due to the armor)
-            player.MaximumLives = 100; // set the player's maximum lives to 100 for the endgame fight (due to the armor)
+            player.Lives = 150; // set the player's lives to 150 for the endgame fight (due to the armor)
+            player.MaximumLives = 150; // set the player's maximum lives to 150 for the endgame fight (due to the armor)
         }
     }
 }

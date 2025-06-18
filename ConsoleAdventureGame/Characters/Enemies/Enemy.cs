@@ -14,7 +14,9 @@ namespace ConsoleAdventureGame
         public abstract int CriticalHitChance { get; }
         public abstract int CriticalDamage { get; }
 
-        public virtual void ShowLives() // TODO: check if this is still needed
+        public virtual bool ReflectsAttack { get; set; } = false; // used by the Shield Warrior to reflect the player's attack, is set to true if the special attack is performed -> player.PerformAttack() knows when not to attack
+
+        public virtual void ShowLives()
         {
             if(Lives <= 0)
             {
@@ -31,22 +33,8 @@ namespace ConsoleAdventureGame
         public virtual void PerformAttack(Player player)
         {
             int damage = Attack.ReturnEnemyAttackDamage(this);
-            if(player.CurrentVehicle != null)
-            {
-                player.CurrentVehicle.Lives -= damage;
-                if (player.CurrentVehicle.Lives <= 0)
-                {
-                    Console.WriteLine();
-                    ConsoleUtils.ColorWriteLine($"You have lost your {player.CurrentVehicle.Name}.",  "red");
-                    Console.WriteLine();
-                    player.CurrentVehicle = null;
-                }
-            }
-            else
-            {
-                player.Lives -= damage;
-            }
 
+            DealDamage(damage, player);
 
             if (player.Lives <= 0)
             {
@@ -60,6 +48,25 @@ namespace ConsoleAdventureGame
                 Console.WriteLine();
 
                 Respawn.RespawnPlayer(player);
+            }
+        }
+
+        public virtual void DealDamage(int damage, Player player)
+        {
+            if (player.CurrentVehicle != null)
+            {
+                player.CurrentVehicle.Lives -= damage;
+                if (player.CurrentVehicle.Lives <= 0)
+                {
+                    Console.WriteLine();
+                    ConsoleUtils.ColorWriteLine($"You have lost your {player.CurrentVehicle.Name}.", "red");
+                    Console.WriteLine();
+                    player.CurrentVehicle = null;
+                }
+            }
+            else
+            {
+                player.Lives -= damage;
             }
         }
     }

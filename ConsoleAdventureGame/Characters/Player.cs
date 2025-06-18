@@ -35,6 +35,12 @@ namespace ConsoleAdventureGame
         public bool PassedLabyrinth { get; set; } = false; //always set to false by default
         public bool CanyonKeyFound { get; set; } = false; //always set to false by default
 
+        /// Properties needed in the Endgame
+        public bool CanRegenarateLives { get; set; } = true; //always set to true by default ,needed because the UndeadMage can stop the regeneration
+        public int LastDealtDamage { get; set; } = 0; //always set to 0 by default, used to reflect the players damge in a figth against the ShieldWarrior
+        public bool CanAttackUndeadKingWithBow { get; set; } = true; //in the beginning the player can attack with the bow until the UndeadKing has only 120 lives left
+        public Enemy LastAttackedEnemy { get; set; } = null!; //always set to null by default, used to reflect the last attacked enemy in a fight against the ShieldWarrior
+
         public Player(string name)
         {
             Name = name;
@@ -45,8 +51,29 @@ namespace ConsoleAdventureGame
 
         public void PerformAttack(Enemy enemy)
         {
-            Attack.ExecuteAttack(this, enemy);
+            LastAttackedEnemy = enemy; //set the last attacked enemy to the current enemy, so the ShieldWarrior can reflect the attack
 
+            if (enemy is ShieldWarrior)
+            {
+                if (enemy.ReflectsAttack)
+                {
+                    return;
+                }
+            }
+
+            while(enemy is UndeadKing && CanAttackUndeadKingWithBow)
+            {
+                InputUtils.GetPlayerInput(new Dictionary<string, Action>
+                {
+                    {"Attack with bow", () => Attack.AttackUndeadKingWithBow(this, enemy as UndeadKing) },
+                    {"Only attack with the swort", () => { CanAttackUndeadKingWithBow = false; } }
+                }); 
+            }
+            if (!(enemy is UndeadKing) || !CanAttackUndeadKingWithBow)
+            {
+                Attack.ExecuteAttack(this, enemy);
+            }
+            
             if(enemy is CactusGolem)
             {
                 if(this.CurrentVehicle != null)
@@ -70,6 +97,6 @@ namespace ConsoleAdventureGame
             }
         }
 
-        public void PerformBowAttack(Enemy enemy) => new Bow().Attack(enemy);
+        public void PerformBowAttack(Enemy enemy) => Attack.ExecuteBowAttack(this, enemy);
     }
 }
