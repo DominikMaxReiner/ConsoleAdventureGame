@@ -8,6 +8,10 @@ namespace ConsoleAdventureGame
 {
     public class Serpent : Enemy
     {
+        /// <summary>
+        /// Starts the task that poisons the player.
+        /// </summary>
+        /// <param name="player">The player that gets poisoned.</param>
         public Serpent(Player player)
         {
             Task.Run(() => Poison(player));
@@ -23,6 +27,10 @@ namespace ConsoleAdventureGame
 
         public override int CriticalDamage { get; } = 60;
 
+        /// <summary>
+        /// Poisons the player, reducing their lives over time (10 times: every 5 seconds: one live).
+        /// </summary>
+        /// <param name="player">The player that gets poisoned.</param>
         private void Poison(Player player)
         {
             Thread.Sleep(50); // wait a bit so the Console-output doesn't get mixed up

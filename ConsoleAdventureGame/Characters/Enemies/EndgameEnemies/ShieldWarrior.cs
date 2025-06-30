@@ -20,6 +20,11 @@ namespace ConsoleAdventureGame
         // The Critical Damage is the same as the regular damage for Shield Warrior because his special attack is the relfection of the player's attack
         public override int CriticalDamage { get; } = 10;
 
+
+        /// <summary>
+        /// If the special attack is performed, the player's last dealt damage is reflected back to the player.
+        /// </summary>
+        /// <param name="player">The player whos damage gets returned.</param>
         public override void PerformAttack(Player player)
         {
             SetReflectsAttack(player); // sets the ReflectsAttack property to true or false
@@ -35,6 +40,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // sets the ReflectsAttack property to true or false based on the player's last attacked enemy and a random chance
         private void SetReflectsAttack(Player player)
         {
             Random random = new Random();

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// The UndeadKing class represents the final boss of the game.
+    /// </summary>
     public class UndeadKing : Enemy
     {
         private bool AttacksOnHisOwn { get; set; } = false; // if the lives get udner 100, the Undead King attacks on his own -> at the transition (but only one time) he sais that he got mad now
@@ -16,6 +19,7 @@ namespace ConsoleAdventureGame
 
         public override string Name { get; } = "UNDEAD KING";
 
+        // needs a backing field to store the lives, because the setter of Lives is overridden to show the boss bar when lives are changed.
         private int _lives = 200; // Undead King starts with 200 lives
         public override int Lives 
         {
@@ -33,6 +37,10 @@ namespace ConsoleAdventureGame
 
         public override int CriticalDamage { get; } = 60;
 
+        /// <summary>
+        /// If Undead King attacks the player, he either summons his minions (if Lives >= 100) or attacks on his own (if Lives < 100).
+        /// </summary>
+        /// <param name="player">The player who gets attacked.</param>
         public override void PerformAttack(Player player)
         {
             if (Lives >= 100)
@@ -51,6 +59,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // Starts a figth between the player and the Undead King's minions (UndeadMage, ShieldWarrior).
         private void SummonMinions(Player player)
         {
             // Logic to summon minions with an own fight
@@ -60,7 +69,7 @@ namespace ConsoleAdventureGame
                 new ShieldWarrior()
             }, false);
 
-            //sets the player's weapon damage to the default value
+            // sets the player's weapon damage to the default value (important if the player got cursed by the UndeadMage)
             Type weaponType = player.CurrentWeapon.GetType();
             Weapon defaultWeapon = (Weapon)Activator.CreateInstance(weaponType)!;
             player.CurrentWeapon.Damage = defaultWeapon.Damage;
@@ -68,6 +77,7 @@ namespace ConsoleAdventureGame
             player.CanRegenarateLives = true; // after a fight against the minions the player can regenerate lives again
         }
 
+        // The Undead King has a chance to heal himself when attacking the player.
         private void PerformOwnAttack(Player player)
         {
             base.PerformAttack(player);
@@ -82,7 +92,8 @@ namespace ConsoleAdventureGame
             }
         }
 
-        public void ShowBossBar()
+        // Outputs the boss bar to the console, showing the current lives of the Undead King.
+        private void ShowBossBar()
         {
             //Console.Clear();
             ConsoleUtils.ColorWrite("BOSS BAR: ", "red");

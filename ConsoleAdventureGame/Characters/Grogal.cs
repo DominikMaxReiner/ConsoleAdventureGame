@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// Speaks the introduction. Tells the player something about the game.
+    /// </summary>
     class Grogal
     {
+        /// <summary>
+        /// Instantiates the player. Starts the Task for the Regeneration of the player. Transition to the Village.
+        /// </summary>
+        /// <param name="playerName">The name of a Player object, that gets created.</param>
         public Grogal(string playerName)
         {
             Console.WriteLine();

@@ -19,7 +19,14 @@ namespace ConsoleAdventureGame
         // The Critical Damage is the same as the regular damage for Undead Mage because his special attack is a spell that weaks the player
         public override int CriticalDamage { get; } = 20;
 
-
+        /// <summary>
+        /// Curses the player with one of two spells.
+        /// </summary>
+        /// <param name="player">The player who gets attacked.</param>
+        /// <remarks>Spells the UndeadMage can cast: 
+        ///  - 25% chance to cast a spell that weakens the player (halves the player's weapon damage for this battle)
+        ///  - 25% chance to cast a spell that stops the regeneration of the player's lives (the player cannot regenerate lives for this battle)
+        /// </remarks>
         public override void PerformAttack(Player player)
         {
             Random random = new Random();
@@ -36,7 +43,7 @@ namespace ConsoleAdventureGame
                 Dialog.ShowMessage(Name, "I have cast a spell that stops your regeneration! You cannot regenerate lives for this battle!", "darkred");
             }
             
-            // A noraml attack is performed every time
+            // A normal attack is performed every time
             base.PerformAttack(player);
         }
     }

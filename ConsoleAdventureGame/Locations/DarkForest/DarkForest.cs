@@ -19,6 +19,11 @@ namespace ConsoleAdventureGame
             ConsoleUtils.ColorWriteLine(introductionText, "gray");
         }
 
+        /// <summary>
+        /// In the DarkForest, the Action is the way to the temple.
+        /// On the way, the player encounters random enemies using the <see cref="Fight"/ class>.
+        /// If the player has a vehicle that can fly, they can skip the fights and go directly to the temple.
+        /// </summary>
         protected override void PerformAction(Player player)
         {
             if(player.CurrentVehicle != null)
@@ -44,6 +49,7 @@ namespace ConsoleAdventureGame
             _ = new Village(player);
         }
 
+        // This method handles the way to the temple, where the player encounters random enemies.
         private void WayToTemple(Player player)
         {
             Fight.SequenceOfRandomFights(player, new List<Enemy> { new Zombie(), new Golem(), new Werewolf() }, 5);

@@ -7,11 +7,27 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// Provides utility methods for handling player input in the game (other than Attacking)
+    /// </summary>
     static class InputUtils
     {
+        /// <summary>The player, whos information will be shown.</summary>
         public static Player? CurrentPlayer { get; set; }
 
-        static public void GetPlayerInput(Dictionary<string, Action> optionTexts) //creates the Dictionary for the player input based on the passed Dictionary of strings and Options
+        /// <summary>
+        /// Displays a numbered list of options to the player and processes their input.
+        /// </summary>
+        /// <param name="optionTexts">
+        /// A dictionary where each key is the option text to display,
+        /// and the corresponding value is the action to execute when selected.
+        /// </param>
+        /// <remarks>
+        /// This method shows the input options, maps them to numeric choices,
+        /// processes the player's input, and executes the selected action.
+        /// If the input is not a number, it checks for special commands to display player data.
+        /// </remarks>
+        public static void GetPlayerInput(Dictionary<string, Action> optionTexts) //creates the Dictionary for the player input based on the passed Dictionary of strings and Options
         {
             var inputOptions = optionTexts.Keys.ToList();
 
@@ -28,7 +44,8 @@ namespace ConsoleAdventureGame
             ProcessPlayersDecision(actionOptions);
         }
 
-        static private void ShowInputOptions(List<string> inputOptions, string color) // shows the options for the player
+        // Writes a prompt and then lists all input options with their index in the specified color
+        private static void ShowInputOptions(List<string> inputOptions, string color) // shows the options for the player
         {
             ConsoleUtils.ColorWriteLine("Your input for the next move: ", color);
             Console.WriteLine();
@@ -38,14 +55,18 @@ namespace ConsoleAdventureGame
             }
         }
 
-        static private void ProcessPlayersDecision(Dictionary<int, Action> actionOptions)
+        // Loop until the player enters a valid number corresponding to an action or a recognized command
+        // If a valid number is entered, execute the associated action and exit the loop
+        // Otherwise, treat input as a command and show player data accordingly
+        private static void ProcessPlayersDecision(Dictionary<int, Action> actionOptions)
         {
             while(true)
             {
                 string playersInput = Console.ReadLine();
                 int playersDecision = 0;
 
-                if (int.TryParse(playersInput, out playersDecision)) // if the input is a valid number the according Action gets executed
+                // Try to parse number and execute action
+                if (int.TryParse(playersInput, out playersDecision)) // If the input is a valid number the according Action gets executed
                 {
                     if (actionOptions.ContainsKey(playersDecision))
                     {
@@ -53,14 +74,17 @@ namespace ConsoleAdventureGame
                         break;
                     }
                 }
-                else // if the input is not a valid number, it checks if the input is a command for player data
+                else // If the input is not a valid number, it checks if the input is a command for player data
                 {
+                    // Interpret input as a special player data command
                     ShowPlayerData(playersInput, CurrentPlayer);
                 }
             }
         }
 
-        static private void ShowPlayerData(string playersInput, Player player)
+        // Display specific player info based on the entered command string (e.g. "//l" for lives)
+        // Shows various stats like lives, coins, keys, vehicle info or weapon info depending on the command
+        private static void ShowPlayerData(string playersInput, Player player)
         {
             switch (playersInput)
             {
@@ -76,16 +100,12 @@ namespace ConsoleAdventureGame
                 case "//v":
                     ConsoleUtils.ColorWriteLine($"Vehicle: {CurrentPlayer?.CurrentVehicle?.Name}", "yellow");
                     ConsoleUtils.ColorWriteLine($"Lives: {CurrentPlayer?.CurrentVehicle?.Lives}", "yellow");
-                    ConsoleUtils.ColorWriteLine($"Speed: {CurrentPlayer?.CurrentVehicle?.Speed}", "yellow");
                     ConsoleUtils.ColorWriteLine($"CanShoot: {CurrentPlayer?.CurrentVehicle?.CanShoot}", "yellow");
                     ConsoleUtils.ColorWriteLine($"CanFly: {CurrentPlayer?.CurrentVehicle?.CanFly}", "yellow");
-                    ConsoleUtils.ColorWriteLine($"FuelLevel: {CurrentPlayer?.CurrentVehicle?.TankLevel}", "yellow");
-                    ConsoleUtils.ColorWriteLine($"FuelConsomption: {CurrentPlayer?.CurrentVehicle?.FuelConsumption}", "yellow");
                     break;
                 case "//w":
                     ConsoleUtils.ColorWriteLine($"Weapon: {CurrentPlayer?.CurrentWeapon?.Name}", "yellow");
                     ConsoleUtils.ColorWriteLine($"Damage: {CurrentPlayer?.CurrentWeapon?.Damage}", "yellow");
-                    ConsoleUtils.ColorWriteLine($"CanShoot: {CurrentPlayer?.CurrentWeapon?.CanShoot}", "yellow"); // TODO: check if this is needed
                     if (player.OwnsBow)
                     {
                         Console.WriteLine();
@@ -96,8 +116,11 @@ namespace ConsoleAdventureGame
             }
         }
 
-
-        static public int GetPlayerInputNumber()
+        /// <summary>
+        /// Asks the player for a numeric input and repeats the prompt until a valid number is entered.
+        /// </summary>
+        /// <returns>The valid number entered by the player.</returns>
+        public static int GetPlayerInputNumber()
         {
             int inputNumber;
             

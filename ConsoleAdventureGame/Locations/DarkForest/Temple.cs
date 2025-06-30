@@ -57,6 +57,7 @@ namespace ConsoleAdventureGame
             Console.WriteLine();
         }
 
+        // In the temple, the player can either fight enemies or destroy the temple if they have a vehicle that can shoot.
         private void InsideTemple(Player player)
         {
             if(!player.ReachedTempleKeyFight)
@@ -78,11 +79,13 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // The final fight of the Temple and DarkForest, where the player fights against a Guardian, Spider, and Serpent.
         private void KeyFight(Player player)
         {
             Fight.PerformMultipleEnemyFight(player, new List<Enemy> { new Guardian(), new Spider(), new Serpent(player) });
         }
 
+        // The method to destroy the temple, which can only be done if the player has a vehicle that can shoot.
         private void TryDestroyTemple(Player player)
         {
             if(player.CurrentVehicle != null && player.CurrentVehicle.CanShoot)

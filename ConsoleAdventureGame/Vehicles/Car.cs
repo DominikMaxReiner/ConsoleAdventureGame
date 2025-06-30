@@ -12,9 +12,6 @@ namespace ConsoleAdventureGame
         public override int Price { get; set; } = 200;
         public override bool CanFly { get; } = false;
         public override bool CanShoot { get; } = false;
-        public override int Speed { get; } = 200;
         public override int Lives { get; set; } = 200;
-        public override int TankLevel { get; set; } = 100;
-        public override int FuelConsumption { get; } = 10;
     }
 }

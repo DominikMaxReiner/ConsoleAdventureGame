@@ -25,7 +25,7 @@ namespace ConsoleAdventureGame
             {
                 { "Enter the abondoned hut", () => new AbandonedHut(player) },
                 { "Flee to the village", () => new Village(player) }
-        });
+            });
         }
     }
 }

@@ -8,10 +8,21 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// Provides static methods to execute attacks from players and enemies,
+    /// including aiming mechanics and damage calculations.
+    /// </summary>
     public static class Attack
     {
+        // Flag to track if the Enter key was pressed during aiming
         private static bool EnterPressed { get; set; }
 
+        /// <summary>
+        /// Executes an attack by the player on the specified enemy using the current weapon.
+        /// Calculates damage based on aiming and updates the enemy's lives accordingly.
+        /// </summary>
+        /// <param name="player">The player performing the attack.</param>
+        /// <param name="enemy">The enemy being attacked.</param>
         public static void ExecuteAttack(Player player, Enemy enemy)
         {
             if (player.CurrentWeapon != null)
@@ -29,6 +40,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // Starts the aiming process and returns the damage dealt based on timing.
         private static int Aim(Weapon weapon)
         {
             EnterPressed = false;
@@ -53,6 +65,7 @@ namespace ConsoleAdventureGame
             return ShowHitbar(HitbarComponents, weapon);
         }
 
+        // Asynchronously listens for the Enter key press and sets EnterPressed flag
         private static void IsEnterPressed()
         {
             Task.Run(() =>
@@ -71,6 +84,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // Displays the hitbar and calculates damage based on where Enter was pressed
         private static int ShowHitbar(List<ColorTextObjects> hitbarComponents, Weapon weapon)
         {
             int damage = 0;
@@ -96,6 +110,7 @@ namespace ConsoleAdventureGame
             return damage;
         }
 
+        // Determines the damage based on the hitbar segment index
         private static int ReturnDamage(int i, Weapon weapon)
         {
             int damage = 0;
@@ -120,6 +135,12 @@ namespace ConsoleAdventureGame
         }
 
 
+        /// <summary>
+        /// Calculates the damage an enemy deals to the player,
+        /// taking into account the enemy's critical hit chance.
+        /// </summary>
+        /// <param name="enemy">The attacking enemy.</param>
+        /// <returns>The amount of damage dealt.</returns>
         public static int ReturnEnemyAttackDamage(Enemy enemy)
         {
             Random random = new Random();
@@ -137,6 +158,12 @@ namespace ConsoleAdventureGame
             }
         }
 
+        /// <summary>
+        /// Executes a bow attack by the player on the specified enemy,
+        /// if the player owns a bow and has arrows.
+        /// </summary>
+        /// <param name="player">The player performing the attack.</param>
+        /// <param name="enemy">The enemy being attacked.</param>
         public static void ExecuteBowAttack(Player player, Enemy enemy)
         {
             if (player.OwnsBow && player.ArrowAmount > 0)
@@ -150,6 +177,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // Handles aiming mechanic for bow attacks and returns damage dealt
         private static int AimWithBow()
         {
             bool successfullHit = false;
@@ -195,6 +223,12 @@ namespace ConsoleAdventureGame
             }
         }
 
+        /// <summary>
+        /// Special method to handle bow attacks on the Undead King.
+        /// Restricts bow usage when the Undead King's lives are below a threshold.
+        /// </summary>
+        /// <param name="player">The player attacking the Undead King.</param>
+        /// <param name="undeadKing">The Undead King enemy.</param>
         public static void AttackUndeadKingWithBow(Player player, UndeadKing undeadKing)
         {
             if(undeadKing.Lives <= 100)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// Represents the vehicle store location where the player can buy vehicles or start a job.
+    /// </summary>
     public class VehicleStore : Location
     {
         public VehicleStore(Player player) : base(player)
@@ -29,6 +32,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // Shows available vehicles and lets the player choose one to buy.
         private void BuyAVehicle(Player player)
         {
             Dialog.ShowMessage("Vehicle Dealer", $"Which vehicle would you like to buy? The car costs {new Car().Price} coins, the airplane costs {new Airplane().Price} coins, and the tank costs {new Tank().Price} coins. Please note that your old vehicle will be scrapped. You can use //v to access information about your vehicle.", "cyan");
@@ -42,6 +46,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // Handles the vehicle purchase transaction and updates the player's current vehicle.
         private void BuyAVehicleTransaction(Player player, Vehicle vehicle)
         {
             Vehicle currentVehicle = player.CurrentVehicle;
@@ -50,6 +55,7 @@ namespace ConsoleAdventureGame
             _ = new VehicleStore(player);
         }
 
+        // Offers the player a job and confirms their choice in a loop.
         private void JobInterview(Player player)
         {
             while (true)
@@ -64,6 +70,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // Starts the vehicle sales job by continuously generating customers.
         private void VehicleStoreJob(Player player)
         {
             while(true)

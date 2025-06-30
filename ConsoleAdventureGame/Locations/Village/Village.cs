@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// The village is the first location the player visits in the game.
+    /// It is safe and serves as a hub for various activities such as buying vehicles, weapons, and working for coins.
+    /// </summary>
     public class Village : Location
     {
         public Village(Player player) : base(player)
@@ -25,7 +29,6 @@ namespace ConsoleAdventureGame
             {
                 {"Go to the VehicleStore", () => new VehicleStore(player) },
                 {"Go to the WeaponSmith", () => new Weaponsmith(player) },
-                {"Go to the GasStation", () => new GasStation(player) },
                 {"Go to the Desert", () => new Desert(player) },
                 {"Go into the DarkForest", () => new DarkForest(player) }
             });

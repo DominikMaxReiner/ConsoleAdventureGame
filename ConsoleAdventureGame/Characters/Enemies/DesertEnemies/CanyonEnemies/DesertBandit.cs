@@ -20,7 +20,10 @@ namespace ConsoleAdventureGame
 
         public int StealAmount { get; } = 70;
 
-
+        /// <summary>
+        /// Steals coins from the player when attacking.
+        /// </summary>
+        /// <param name="player">The player who gets robbed.</param>
         public override void PerformAttack(Player player)
         {
             player.Coins -= StealAmount;

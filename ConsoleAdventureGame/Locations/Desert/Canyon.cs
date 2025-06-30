@@ -29,6 +29,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // If the player chooses to cross the bridge, there is a chance that the bridge breaks and the player dies. It depends on whether the player has a vehicle or not.
         private void CrossBridge(Player player)
         {
             int breakChanceValue;
@@ -56,6 +57,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // If the player chooses to go north, he has to fight against the canyon guardians.
         private void GoNorth(Player player)
         {
             if(!player.PassedCanyonGuardians)
@@ -72,6 +74,7 @@ namespace ConsoleAdventureGame
             EnterCanyon(player);
         }
 
+        // After crossing the bridge or defeating the canyon guardians, the player can enter the canyon.
         private void EnterCanyon(Player player)
         {
             ConsoleUtils.ColorWriteLine("You made it to the canyon. But there is a sandstorm approaching. You should hurry.", "white");
@@ -83,6 +86,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // In the canyon, the player can either leave his vehicle behind to reach the labyrinth or go back to the village.
         private void WayThroughCanyon(Player player)
         {
             if(player.CurrentVehicle != null)
@@ -103,6 +107,7 @@ namespace ConsoleAdventureGame
             PortalUtils.OpenPortal(player); // after passing the labyrinth, the player can open the portal to the EndFight
         }
 
+        // The player needs to pass the labyrinth with a specific path (saved in the player instance) to enter the Endgame.
         private void PassLabyrinth(Player player)
         {
             player.CurrentVehicle = null; // leave the vehicle behind

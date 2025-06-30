@@ -1,7 +1,6 @@
 ﻿using ConsoleAdventureGame.Utils;
 using System.Web;
-//TODO: add summaries to every class
-//TODO: add comments to the code
+
 namespace ConsoleAdventureGame
 {
     internal class Program

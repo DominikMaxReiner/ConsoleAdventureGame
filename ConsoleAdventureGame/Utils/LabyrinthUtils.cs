@@ -6,8 +6,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame.Utils
 {
+    /// <summary>
+    /// Provides utility functions to generate and print a randomly curved labyrinth.
+    /// </summary>
     public static class LabyrinthUtils
     {
+        /// <summary>
+        /// Generates a labyrinth with vertical and horizontal paths. 
+        /// Every 5th row introduces a horizontal change in the path to create curves.
+        /// Updates the reference path string with direction changes ("lr" or "rl").
+        /// </summary>
+        /// <param name="path">A reference to a string that will store the correct path.</param>
+        /// <returns>A 2D character array representing the labyrinth structure.</returns>
         public static char[,] ReturnLabyrinth(ref string path)
         {
             char[,] labyrinth = new char[25, 50];
@@ -47,6 +57,7 @@ namespace ConsoleAdventureGame.Utils
             return labyrinth;
         }
 
+        // Creates a horizontal path between xPos and wantedXPos in row i
         private static void CreateHorizontalWay(int xPos, int wantedXPos,int i, char[,] labyrinth)
         {
             for (int j = 0; j < labyrinth.GetLength(1); j++)
@@ -59,6 +70,7 @@ namespace ConsoleAdventureGame.Utils
             }
         }
 
+        // Creates a vertical path at column xPos in row i
         private static void CreateVerticalWay(int xPos, int i, char[,] labyrinth)
         {
             for (int j = 0; j < labyrinth.GetLength(1); j++)
@@ -71,6 +83,7 @@ namespace ConsoleAdventureGame.Utils
             }
         }
 
+        // Appends movement direction to the path string based on x position change
         private static string CreatePath(string path, int xPos, int wantedXPos)
         {
             if (wantedXPos > xPos)
@@ -85,6 +98,11 @@ namespace ConsoleAdventureGame.Utils
             return path;
         }
 
+        /// <summary>
+        /// Prints the labyrinth to the console using the specified color.
+        /// </summary>
+        /// <param name="labyrinth">The 2D character array representing the labyrinth.</param>
+        /// <param name="color">The name of the color to use for rendering.</param>
         public static void PrintLabyrinth(char[,] labyrinth, string color)
         {
             for (int i = 0; i < labyrinth.GetLength(0); i++)

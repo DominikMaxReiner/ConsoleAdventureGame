@@ -16,6 +16,11 @@ namespace ConsoleAdventureGame
     /// </summary>
     public static class PortalUtils
     {
+        /// <summary>
+        /// Opens the portal and handles key acquisition, portal animation, and player decision-making.
+        /// Displays the portal visually and allows the player to activate it or return to the desert.
+        /// </summary>
+        /// <param name="player">The current player interacting with the portal.</param>
         public static void OpenPortal(Player player)
         {
             if (!player.CanyonKeyFound)
@@ -97,6 +102,7 @@ namespace ConsoleAdventureGame
         }*/
         #endregion
 
+        // Draws the portal animation for 3 seconds using colored stars
         private static void DrawPortal()
         {
             Random random = new Random();
@@ -145,6 +151,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // Checks key count and activates the portal if conditions are met
         private static void ActivatePortal(Player player) //CancellationTokenSource cts
         {
             if(player.AmountOfKeys >= 3)

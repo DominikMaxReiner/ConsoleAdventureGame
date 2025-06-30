@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// The abstract class Vehicle represents any vehicle in the game.
+    /// </summary>
     public abstract class Vehicle
     {
+        /// <summary>The name of the vehicle.</summary>
         public abstract string Name { get; }
+        /// <summary>The amount of coins the player has to pay for the vehicle.</summary>
         public abstract int Price { get; set; }
+        /// <summary>A flag that indicates if the vehicle can fly.</summary>
         public abstract bool CanFly { get; }
+        /// <summary>A flag that indicates if the vehicle can shoot.</summary>
         public abstract bool CanShoot { get; }
-        public abstract int Speed { get; }
+        /// <summary>The amount of lives the vehicle has initially.</summary>
         public abstract int Lives { get; set; }
-        public abstract int TankLevel { get; set; } // Tank level can be infinite and is set to 100 by default -> Reference consumption rate is 10L/100km (for an airplane only 3L, for a tank 100L)
-        public abstract int FuelConsumption { get; }
     }
 }

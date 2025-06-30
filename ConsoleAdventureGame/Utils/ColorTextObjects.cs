@@ -6,12 +6,18 @@ using System.Threading.Tasks;
 
 namespace ConsoleAdventureGame
 {
-    public class ColorTextObjects // TODO: check if this class is needed
+    /// <summary>
+    /// Represents a text with an associated color.
+    /// </summary>
+    public class ColorTextObjects
     {
+        /// <summary>The text that can be shown</summary>
         public string Text { get; set; }
+
+        /// <summary>The color of the text</summary>
         public string Color { get; set; }
 
-        public ColorTextObjects(string text, string color)
+        public ColorTextObjects(string text, string color) // sets the Text and Color properties
         {
             Text = text;
             Color = color;

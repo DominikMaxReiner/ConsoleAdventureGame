@@ -7,11 +7,23 @@ using System.Xml.Linq;
 
 namespace ConsoleAdventureGame
 {
+    /// <summary>
+    /// The Customer class represents a customer who wants to buy a vehicle in the VehicleStore.
+    /// It is only needed in the VehicleStore if the player persues the job.
+    /// </summary>
     public class Customer
     {
+        /// <summary>The name of the customer. It is shwon in the introduction of the customer.</summary>
         protected string Name { get; set; }
+        /// <summary>The vehicle that the customer wants to buy.</summary>
         private Vehicle WantedVehicle;
 
+        /// <summary>
+        /// The properties are assigned values using special methods.
+        /// The customer introduces himself.
+        /// The selling process is started.
+        /// </summary>
+        /// <param name="player">The player who sells the car.</param>
         public Customer(Player player)
         {
             WantedVehicle = ReturnVehicle();
@@ -23,6 +35,7 @@ namespace ConsoleAdventureGame
             Console.WriteLine();
         }
 
+        // The name of the customer is randomly selected and returned.
         private static string ReturnName()
         {
             string[] names = {"Adrian", "Alicia", "Amelie", "Anna", "Antonia", "Arthur", "Benjamin", "Bianca", "Carla", "Charlotte",
@@ -41,6 +54,7 @@ namespace ConsoleAdventureGame
             return names[index];
         }
 
+        // The vehicle that the customer wants to buy is randomly selected and returned.
         private static Vehicle ReturnVehicle()
         {
             Vehicle[] vehicles = { new Car(), new Airplane(), new Tank() };
@@ -50,7 +64,8 @@ namespace ConsoleAdventureGame
             return vehicles[index];
         }
 
-        protected void Act(Player player)
+        // The Act method starts the selling process.
+        private void Act(Player player)
         {
             Dialog.ShowMessage(Name, $"Here are {WantedVehicle.Price} coins. Does that work for you?", "blue");
 
@@ -66,6 +81,7 @@ namespace ConsoleAdventureGame
             });
         }
 
+        // The SellWithPercent method handles the selling process based on the percentage requested by the player. (the probability of a sell decreases with higher wanted percentages)
         private void SellWithPercent(Player player, int percent)
         {
             Random random = new Random();
@@ -81,6 +97,7 @@ namespace ConsoleAdventureGame
             }
         }
 
+        // The SellCar method handles the actual selling of the car to the player; also with the receiving of the coins.
         private void SellCar(Player player, int price)
         {
             Dialog.ShowMessage(player.Name, $"Here is the key to your new {WantedVehicle.Name}.", "white");
@@ -88,6 +105,7 @@ namespace ConsoleAdventureGame
             player.Coins += price/3;
         }
 
+        // The IntroduceYourself method is used to introduce the customer to the player.
         protected void IntroduceYourself()
         {
             string introductionText = $"Hello, I am {Name}. I am here to buy a {WantedVehicle.Name}.";
